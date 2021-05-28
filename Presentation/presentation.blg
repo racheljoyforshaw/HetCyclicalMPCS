@@ -1,0 +1,52 @@
+This is BibTeX, Version 0.99d (TeX Live 2020)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: presentation.aux
+The style file: apalike.bst
+Database file #1: ../Paper/references.bib
+I was expecting a `,' or a `}'---line 3553 of file ../Paper/references.bib
+ :  
+ :  @article{KS1998,
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+You've used 15 entries,
+            1935 wiz_defined-function locations,
+            585 strings with 6450 characters,
+and the built_in function-call counts, 6024 in all, are:
+= -- 583
+> -- 249
+< -- 8
++ -- 94
+- -- 82
+* -- 552
+:= -- 1060
+add.period$ -- 45
+call.type$ -- 15
+change.case$ -- 116
+chr.to.int$ -- 15
+cite$ -- 15
+duplicate$ -- 204
+empty$ -- 418
+format.name$ -- 105
+if$ -- 1161
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 12
+newline$ -- 78
+num.names$ -- 45
+pop$ -- 84
+preamble$ -- 1
+purify$ -- 116
+quote$ -- 0
+skip$ -- 150
+stack$ -- 0
+substring$ -- 465
+swap$ -- 15
+text.length$ -- 3
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 90
+warning$ -- 0
+while$ -- 45
+width$ -- 0
+write$ -- 197
+(There was 1 error message)

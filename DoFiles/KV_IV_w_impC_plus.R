@@ -1,0 +1,598 @@
+# Kaplan Violante - consumption_plus - IV, weighted
+# need min of 3 periods for identification, so pre-recession sample is 2003,5,7; post-recession is 2009,11,13
+
+f030507_KVIC_plus <- f030507
+f091113_KVIC_plus <- f091113
+
+
+# replace missing 03 consumption with imp consumption
+
+f030507_KVIC_plus$consumption_plus03<- f030507$consumption03
+
+
+##### CREATE VARIABLES ########
+# create year of birth
+
+# create year variable
+f030507_KVIC_plus$year03 <- 2003
+f030507_KVIC_plus$year05 <- 2005
+f030507_KVIC_plus$year07 <- 2007
+
+f091113_KVIC_plus$year09 <- 2009
+f091113_KVIC_plus$year11 <- 2011
+f091113_KVIC_plus$year13 <- 2013
+
+
+# log consumption_plus - move into positive
+min_all <- min(min(f030507_KVIC_plus$consumption_plus03,na.rm=TRUE),min(f030507_KVIC_plus$consumption_plus05,na.rm=TRUE),min(f030507_KVIC_plus$consumption_plus07,na.rm=TRUE),
+               min(f091113_KVIC_plus$consumption_plus09,na.rm=TRUE),min(f091113_KVIC_plus$consumption_plus11,na.rm=TRUE),min(f091113_KVIC_plus$consumption_plus13,na.rm=TRUE),
+               min(f030507_KVIC_plus$income03,na.rm=TRUE),min(f030507_KVIC_plus$income05,na.rm=TRUE),min(f030507_KVIC_plus$income07,na.rm=TRUE),
+               min(f091113_KVIC_plus$income09,na.rm=TRUE),min(f091113_KVIC_plus$income11,na.rm=TRUE),min(f091113_KVIC_plus$income13,na.rm=TRUE))
+
+f030507_KVIC_plus$logconsumption_plus03 <- log(f030507_KVIC_plus$consumption_plus03 + abs(min_all) +1)
+f030507_KVIC_plus$logconsumption_plus05 <- log(f030507_KVIC_plus$consumption_plus05+ abs(min_all) +1)
+f030507_KVIC_plus$logconsumption_plus07 <- log(f030507_KVIC_plus$consumption_plus07+ abs(min_all) +1)
+
+f091113_KVIC_plus$logconsumption_plus09 <- log(f091113_KVIC_plus$consumption_plus09+ abs(min_all) +1)
+f091113_KVIC_plus$logconsumption_plus11 <- log(f091113_KVIC_plus$consumption_plus11+ abs(min_all) +1)
+f091113_KVIC_plus$logconsumption_plus13 <- log(f091113_KVIC_plus$consumption_plus13+ abs(min_all) +1)
+
+# log income - move into positive
+
+f030507_KVIC_plus$logy03 <- log(f030507_KVIC_plus$income03 + abs(min_all) +1)
+f030507_KVIC_plus$logy05 <- log(f030507_KVIC_plus$income05+ abs(min_all) +1)
+f030507_KVIC_plus$logy07 <- log(f030507_KVIC_plus$income07+ abs(min_all) +1)
+
+f091113_KVIC_plus$logy09 <- log(f091113_KVIC_plus$income09+ abs(min_all) +1)
+f091113_KVIC_plus$logy11 <- log(f091113_KVIC_plus$income11+ abs(min_all) +1)
+f091113_KVIC_plus$logy13 <- log(f091113_KVIC_plus$income13+ abs(min_all) +1)
+rm(min_all)
+
+
+
+
+f030507_KVIC_plus_keeps <- c("uniqueID","primarySamplingUnit","stratification","black03","black05","black07",
+                        "educ03","educ05","educ07",
+                        "employed03","employed05","employed07",
+                        "exIncome03","exIncome05","exIncome07",
+                        "famSize03","famSize05","famSize07",
+                        "kids03","kids05","kids07",
+                        "kidsOut03","kidsOut05","kidsOut07",
+                        "longWeight03","longWeight05","longWeight07",
+                        "other03","other05","other07",
+                        "logy03","logy05","logy07",
+                        "region03","region05","region07",
+                        "retired03","retired05","retired07",
+                        "unemployed03","unemployed05","unemployed07",
+                        "white03","white05","white07",
+                        "year03","year05","year07",
+                        "logconsumption_plus03","logconsumption_plus05","logconsumption_plus07",
+                        "age03","age05","age07",
+                        "income03","income05","income07",
+                        "poorHTM03","poorHTM05","poorHTM07",
+                        "richHTM03","richHTM05","richHTM07",
+                        "totalWealth03","totalWealth05","totalWealth07",
+                        "interestRate03","interestRate05","interestRate07")
+
+f030507_KVIC_plus <- f030507_KVIC_plus[,f030507_KVIC_plus_keeps]
+
+f091113_KVIC_plus_keeps <- c("uniqueID","primarySamplingUnit","stratification","black09","black11","black13",
+                        "educ09","educ11","educ13",
+                        "employed09","employed11","employed13",
+                        "exIncome09","exIncome11","exIncome13",
+                        "famSize09","famSize11","famSize13",
+                        "kids09","kids11","kids13",
+                        "kidsOut09","kidsOut11","kidsOut13",
+                        "longWeight09","longWeight11","longWeight13",
+                        "other09","other11","other13",
+                        "logy09","logy11","logy13",
+                        "region09","region11","region13",
+                        "retired09","retired11","retired13",
+                        "unemployed09","unemployed11","unemployed13",
+                        "white09","white11","white13",
+                        "year09","year11","year13",
+                        "logconsumption_plus09","logconsumption_plus11","logconsumption_plus13",
+                        "age09","age11","age13",
+                        "income09","income11","income13",
+                        "poorHTM09","poorHTM11","poorHTM13",
+                        "richHTM09","richHTM11","richHTM13",
+                        "totalWealth09","totalWealth11","totalWealth13",
+                        "interestRate09","interestRate11","interestRate13")
+
+f091113_KVIC_plus <- f091113_KVIC_plus[,f091113_KVIC_plus_keeps]
+
+rm(f091113_KVIC_plus_keeps,f030507_KVIC_plus_keeps)
+
+# drop NA 
+f030507_KVIC_plus <- na.omit(f030507_KVIC_plus)
+f091113_KVIC_plus <- na.omit(f091113_KVIC_plus)
+
+
+# quintiles
+
+# survey design
+
+# familyPanelSurvey030507 <- svydesign(id=~primarySamplingUnit,
+#                                      strat=~stratification,
+#                                      weights=~longWeight03,
+#                                      data=f030507_KVIC_plus,
+#                                      nest=TRUE)
+# 
+# familyPanelSurvey091113 <- svydesign(id=~primarySamplingUnit,
+#                                      strat=~stratification,
+#                                      weights=~longWeight09,
+#                                      data=f091113_KVIC_plus,
+#                                      nest=TRUE)
+
+quintiles_03 <- quantile(f030507_KVIC_plus$income03, seq(0, 1, 0.2),NA.rm=TRUE)
+quintiles_05 <- quantile(f030507_KVIC_plus$income05, seq(0, 1, 0.2),NA.rm=TRUE)
+quintiles_07 <- quantile(f030507_KVIC_plus$income07, seq(0, 1, 0.2),NA.rm=TRUE)
+
+quintiles_09 <- quantile(f091113_KVIC_plus$income09, seq(0, 1, 0.2),NA.rm=TRUE)
+quintiles_11 <- quantile(f091113_KVIC_plus$income11, seq(0, 1, 0.2),NA.rm=TRUE)
+quintiles_13 <- quantile(f091113_KVIC_plus$income13, seq(0, 1, 0.2),NA.rm=TRUE)
+
+
+f030507_KVIC_plus$quintile03 <- ifelse(f030507_KVIC_plus$income03<quintiles_03[2],1,
+                                  ifelse(f030507_KVIC_plus$income03>=quintiles_03[2] & f030507_KVIC_plus$income03<quintiles_03[3],2,
+                                         ifelse(f030507_KVIC_plus$income03>=quintiles_03[3] & f030507_KVIC_plus$income03<quintiles_03[4],3,
+                                                ifelse(f030507_KVIC_plus$income03>=quintiles_03[4]& f030507_KVIC_plus$income03<quintiles_03[5],4,
+                                                       ifelse(f030507_KVIC_plus$income03>=quintiles_03[5],5,NA)))))
+f030507_KVIC_plus$quintile05 <- ifelse(f030507_KVIC_plus$income05<quintiles_05[2],1,
+                                  ifelse(f030507_KVIC_plus$income05>=quintiles_05[2] & f030507_KVIC_plus$income05<quintiles_05[3],2,
+                                         ifelse(f030507_KVIC_plus$income05>=quintiles_05[3] & f030507_KVIC_plus$income05<quintiles_05[4],3,
+                                                ifelse(f030507_KVIC_plus$income05>=quintiles_05[4]& f030507_KVIC_plus$income05<quintiles_05[5],4,
+                                                       ifelse(f030507_KVIC_plus$income05>=quintiles_05[5],5,NA)))))
+f030507_KVIC_plus$quintile07 <- ifelse(f030507_KVIC_plus$income07<quintiles_07[2],1,
+                                  ifelse(f030507_KVIC_plus$income07>=quintiles_07[2] & f030507_KVIC_plus$income07<quintiles_07[3],2,
+                                         ifelse(f030507_KVIC_plus$income07>=quintiles_07[3] & f030507_KVIC_plus$income07<quintiles_07[4],3,
+                                                ifelse(f030507_KVIC_plus$income07>=quintiles_07[4]& f030507_KVIC_plus$income07<quintiles_07[5],4,
+                                                       ifelse(f030507_KVIC_plus$income07>=quintiles_07[5],5,NA)))))
+f091113_KVIC_plus$quintile09 <- ifelse(f091113_KVIC_plus$income09<quintiles_09[2],1,
+                                  ifelse(f091113_KVIC_plus$income09>=quintiles_09[2] & f091113_KVIC_plus$income09<quintiles_09[3],2,
+                                         ifelse(f091113_KVIC_plus$income09>=quintiles_09[3] & f091113_KVIC_plus$income09<quintiles_09[4],3,
+                                                ifelse(f091113_KVIC_plus$income09>=quintiles_09[4]& f091113_KVIC_plus$income09<quintiles_09[5],4,
+                                                       ifelse(f091113_KVIC_plus$income09>=quintiles_09[5],5,NA)))))
+f091113_KVIC_plus$quintile11 <- ifelse(f091113_KVIC_plus$income11<quintiles_11[2],1,
+                                  ifelse(f091113_KVIC_plus$income11>=quintiles_11[2] & f091113_KVIC_plus$income11<quintiles_11[3],2,
+                                         ifelse(f091113_KVIC_plus$income11>=quintiles_11[3] & f091113_KVIC_plus$income11<quintiles_11[4],3,
+                                                ifelse(f091113_KVIC_plus$income11>=quintiles_11[4]& f091113_KVIC_plus$income11<quintiles_11[5],4,
+                                                       ifelse(f091113_KVIC_plus$income11>=quintiles_11[5],5,NA)))))
+f091113_KVIC_plus$quintile13 <- ifelse(f091113_KVIC_plus$income13<quintiles_13[2],1,
+                                  ifelse(f091113_KVIC_plus$income13>=quintiles_13[2] & f091113_KVIC_plus$income13<quintiles_13[3],2,
+                                         ifelse(f091113_KVIC_plus$income13>=quintiles_13[3] & f091113_KVIC_plus$income13<quintiles_13[4],3,
+                                                ifelse(f091113_KVIC_plus$income13>=quintiles_13[4]& f091113_KVIC_plus$income13<quintiles_13[5],4,
+                                                       ifelse(f091113_KVIC_plus$income13>=quintiles_13[5],5,NA)))))
+
+
+
+# familyPanelSurvey030507 <- svydesign(id=~primarySamplingUnit,
+#                                      strat=~stratification,
+#                                      weights=~longWeight03,
+#                                      data=f030507_KVIC_plus,
+#                                      nest=TRUE)
+# 
+# familyPanelSurvey091113 <- svydesign(id=~primarySamplingUnit,
+#                                      strat=~stratification,
+#                                      weights=~longWeight09,
+#                                      data=f091113_KVIC_plus,
+#                                      nest=TRUE)
+
+
+# drop income
+
+f030507_KVIC_plus <- select(f030507_KVIC_plus,-c("income03","income05","income07"))
+f091113_KVIC_plus <- select(f091113_KVIC_plus,-c("income09","income11","income13"))
+
+
+# wide to long
+
+KVIC_plus_regressionData_030507 <- reshape(f030507_KVIC_plus, idvar=c("uniqueID","primarySamplingUnit","stratification"), direction="long", 
+                                      varying=list(black=c(grep("black", colnames(f030507_KVIC_plus))),
+                                                   educ=c(grep("educ", colnames(f030507_KVIC_plus))),
+                                                   employed=c(grep("^employed", colnames(f030507_KVIC_plus))),
+                                                   exIncome=c(grep("exIncome", colnames(f030507_KVIC_plus))),
+                                                   famSize=c(grep("famSize", colnames(f030507_KVIC_plus))),
+                                                   kids=c(grep("kids[^Out]", colnames(f030507_KVIC_plus))),
+                                                   kidsOut=c(grep("kidsOut", colnames(f030507_KVIC_plus))),
+                                                   longWeight=c(grep("longWeight", colnames(f030507_KVIC_plus))),
+                                                   other=c(grep("other", colnames(f030507_KVIC_plus))), 
+                                                   logy=c(grep("logy",colnames(f030507_KVIC_plus))),
+                                                   region=c(grep("region", colnames(f030507_KVIC_plus))),
+                                                   retired=c(grep("retired",colnames(f030507_KVIC_plus))),
+                                                   unemployed=c(grep("unemployed", colnames(f030507_KVIC_plus))),
+                                                   white=c(grep("white", colnames(f030507_KVIC_plus))),
+                                                   year=c(grep("year", colnames(f030507_KVIC_plus))),
+                                                   logconsumption_plus=c(grep("logconsumption_plus",colnames(f030507_KVIC_plus))),
+                                                   age=c(grep("age",colnames(f030507_KVIC_plus))),
+                                                   poorHTM=c(grep("poorHTM",colnames(f030507_KVIC_plus))),
+                                                   richHTM=c(grep("richHTM",colnames(f030507_KVIC_plus))),
+                                                   quintile=c(grep("quintile",colnames(f030507_KVIC_plus))),
+                                                   totalWealth=c(grep("totalWealth",colnames(f030507_KVIC_plus))),
+                                                   interestRate=c(grep("interestRate",colnames(f030507_KVIC_plus)))),
+                                      v.names = c("black","educ","employed",
+                                                  "exIncome","famSize","kids","kidsOut","longWeight",
+                                                  "other","logy","region","retired","unemployed","white","year","logconsumption_plus","age","poorHTM","richHTM","quintile","totalWealth","interestRate"), #,"bigCity"),
+                                      times=c("03", "05","07"))
+
+
+KVIC_plus_regressionData_091113 <- reshape(f091113_KVIC_plus, idvar=c("uniqueID","primarySamplingUnit","stratification"), direction="long", 
+                                      varying=list(black=c(grep("black", colnames(f091113_KVIC_plus))),
+                                                   educ=c(grep("educ", colnames(f091113_KVIC_plus))),
+                                                   employed=c(grep("^employed", colnames(f091113_KVIC_plus))),
+                                                   exIncome=c(grep("exIncome", colnames(f091113_KVIC_plus))),
+                                                   famSize=c(grep("famSize", colnames(f091113_KVIC_plus))),
+                                                   kids=c(grep("kids[^Out]", colnames(f091113_KVIC_plus))),
+                                                   kidsOut=c(grep("kidsOut", colnames(f091113_KVIC_plus))),
+                                                   longWeight=c(grep("longWeight", colnames(f091113_KVIC_plus))),
+                                                   other=c(grep("other", colnames(f091113_KVIC_plus))), 
+                                                   logy=c(grep("logy",colnames(f091113_KVIC_plus))),
+                                                   region=c(grep("region", colnames(f091113_KVIC_plus))),
+                                                   retired=c(grep("retired",colnames(f091113_KVIC_plus))),
+                                                   unemployed=c(grep("unemployed", colnames(f091113_KVIC_plus))),
+                                                   white=c(grep("white", colnames(f091113_KVIC_plus))),
+                                                   year=c(grep("year", colnames(f091113_KVIC_plus))),
+                                                   logconsumption_plus=c(grep("logconsumption_plus",colnames(f091113_KVIC_plus))),
+                                                   age=c(grep("age",colnames(f091113_KVIC_plus))),
+                                                   poorHTM=c(grep("poorHTM",colnames(f091113_KVIC_plus))),
+                                                   richHTM=c(grep("richHTM",colnames(f091113_KVIC_plus))),
+                                                   quintile=c(grep("quintile",colnames(f091113_KVIC_plus))),
+                                                   totalWealth=c(grep("totalWealth",colnames(f091113_KVIC_plus))),
+                                                   interestRate=c(grep("interestRate",colnames(f091113_KVIC_plus)))),
+                                      v.names = c("black","educ","employed",
+                                                  "exIncome","famSize","kids","kidsOut","longWeight",
+                                                  "other","logy","region","retired","unemployed","white","year","logconsumption_plus","age","poorHTM","richHTM","quintile","totalWealth","interestRate"), #,"bigCity"),
+                                      times=c("09", "11","13"))
+
+# create year of birth variable
+KVIC_plus_regressionData_030507$yob <- KVIC_plus_regressionData_030507$year - KVIC_plus_regressionData_030507$age
+KVIC_plus_regressionData_091113$yob <- KVIC_plus_regressionData_091113$year - KVIC_plus_regressionData_091113$age
+
+# create factors
+KVIC_plus_regressionData_030507$year <- factor(KVIC_plus_regressionData_030507$year)
+KVIC_plus_regressionData_030507$yob <- factor(KVIC_plus_regressionData_030507$yob)
+KVIC_plus_regressionData_030507$educ <- factor(KVIC_plus_regressionData_030507$educ)
+KVIC_plus_regressionData_030507$white <- factor(KVIC_plus_regressionData_030507$white)
+KVIC_plus_regressionData_030507$black <- factor(KVIC_plus_regressionData_030507$black)
+KVIC_plus_regressionData_030507$other <- factor(KVIC_plus_regressionData_030507$other)
+KVIC_plus_regressionData_030507$famSize <- factor(KVIC_plus_regressionData_030507$famSize)
+KVIC_plus_regressionData_030507$kids <- factor(KVIC_plus_regressionData_030507$kids)
+KVIC_plus_regressionData_030507$employed <- factor(KVIC_plus_regressionData_030507$employed)
+KVIC_plus_regressionData_030507$unemployed <- factor(KVIC_plus_regressionData_030507$unemployed)
+KVIC_plus_regressionData_030507$retired <- factor(KVIC_plus_regressionData_030507$retired)
+KVIC_plus_regressionData_030507$exIncome <- factor(KVIC_plus_regressionData_030507$exIncome)
+KVIC_plus_regressionData_030507$region <- factor(KVIC_plus_regressionData_030507$region)
+KVIC_plus_regressionData_030507$kidsOut <- factor(KVIC_plus_regressionData_030507$kidsOut)
+KVIC_plus_regressionData_030507$poorHTM <- factor(KVIC_plus_regressionData_030507$poorHTM)
+KVIC_plus_regressionData_030507$richHTM <- factor(KVIC_plus_regressionData_030507$richHTM)
+KVIC_plus_regressionData_030507$interestRate <- factor(KVIC_plus_regressionData_030507$interestRate)
+
+KVIC_plus_regressionData_091113$year <- factor(KVIC_plus_regressionData_091113$year)
+KVIC_plus_regressionData_091113$yob <- factor(KVIC_plus_regressionData_091113$yob)
+KVIC_plus_regressionData_091113$educ <- factor(KVIC_plus_regressionData_091113$educ)
+KVIC_plus_regressionData_091113$white <- factor(KVIC_plus_regressionData_091113$white)
+KVIC_plus_regressionData_091113$black <- factor(KVIC_plus_regressionData_091113$black)
+KVIC_plus_regressionData_091113$other <- factor(KVIC_plus_regressionData_091113$other)
+KVIC_plus_regressionData_091113$famSize <- factor(KVIC_plus_regressionData_091113$famSize)
+KVIC_plus_regressionData_091113$kids <- factor(KVIC_plus_regressionData_091113$kids)
+KVIC_plus_regressionData_091113$employed <- factor(KVIC_plus_regressionData_091113$employed)
+KVIC_plus_regressionData_091113$unemployed <- factor(KVIC_plus_regressionData_091113$unemployed)
+KVIC_plus_regressionData_091113$retired <- factor(KVIC_plus_regressionData_091113$retired)
+KVIC_plus_regressionData_091113$exIncome <- factor(KVIC_plus_regressionData_091113$exIncome)
+KVIC_plus_regressionData_091113$region <- factor(KVIC_plus_regressionData_091113$region)
+KVIC_plus_regressionData_091113$kidsOut <- factor(KVIC_plus_regressionData_091113$kidsOut)
+KVIC_plus_regressionData_091113$poorHTM <- factor(KVIC_plus_regressionData_091113$poorHTM)
+KVIC_plus_regressionData_091113$richHTM <- factor(KVIC_plus_regressionData_091113$richHTM)
+KVIC_plus_regressionData_091113$interestRate <- factor(KVIC_plus_regressionData_091113$interestRate)
+
+
+# survey design
+
+familyPanelSurvey030507 <- svydesign(id=~primarySamplingUnit,
+                                     strat=~stratification,
+                                     weights=~longWeight,
+                                     data=KVIC_plus_regressionData_030507,
+                                     nest=TRUE)
+
+familyPanelSurvey091113 <- svydesign(id=~primarySamplingUnit,
+                                     strat=~stratification,
+                                     weights=~longWeight,
+                                     data=KVIC_plus_regressionData_091113,
+                                     nest=TRUE)
+
+
+
+
+
+# do the regressions
+# we first regress log income and log consumption_plus expenditures on
+#year and cohort dummies, education, race, family structure, employment, geographic
+#variables, and interactions of year dummies with education, race, employment, and
+#region. We then construct the first-differenced residuals of log consumption_plus d(cit) and
+#log income d(yit).
+
+KVIC_plus_income_030507.lm = svyglm(logy ~ year +
+                                 yob +
+                                 #age +
+                                 educ +
+                                 white +
+                                 black +
+                                 other +
+                                 famSize + 
+                                 kids + 
+                                 employed +
+                                 unemployed +
+                                 retired +
+                                 exIncome +
+                                 region + 
+                                 kidsOut + 
+                                 poorHTM +
+                                 richHTM + 
+                                 educ*year +
+                                 white*year +
+                                 black*year +
+                                 other*year +
+                                 employed*year + 
+                                 unemployed*year +
+                                 retired*year +
+                                 region*year +
+                                 totalWealth + 
+                                 interestRate
+                               ,familyPanelSurvey030507) 
+
+KVIC_plus_regressionData_030507$resIncome <-KVIC_plus_income_030507.lm$residuals
+
+KVIC_plus_income_091113.lm = svyglm(logy ~ year +
+                                 yob +
+                                 #age +
+                                 educ +
+                                 white +
+                                 black +
+                                 other +
+                                 famSize + 
+                                 kids + 
+                                 employed +
+                                 unemployed +
+                                 retired +
+                                 exIncome +
+                                 region + 
+                                 kidsOut +
+                                 poorHTM +
+                                 richHTM + 
+                                 educ*year +
+                                 white*year +
+                                 black*year +
+                                 other*year +
+                                 employed*year + 
+                                 unemployed*year +
+                                 retired*year +
+                                 region*year +
+                                 totalWealth + 
+                                 interestRate
+                               , familyPanelSurvey091113) 
+KVIC_plus_regressionData_091113$resIncome <-KVIC_plus_income_091113.lm$residuals
+
+
+KVIC_plus_consumption_plus_030507.lm = svyglm(logconsumption_plus ~ year +
+                                         yob +
+                                         #age +
+                                         educ +
+                                         white +
+                                         black +
+                                         other +
+                                         famSize + 
+                                         kids + 
+                                         employed +
+                                         unemployed +
+                                         retired +
+                                         exIncome +
+                                         region + 
+                                         kidsOut + 
+                                         poorHTM +
+                                         richHTM + 
+                                         educ*year +
+                                         white*year +
+                                         black*year +
+                                         other*year +
+                                         employed*year + 
+                                         unemployed*year +
+                                         retired*year +
+                                         region*year +
+                                         totalWealth +
+                                         interestRate
+                                       , familyPanelSurvey030507) 
+KVIC_plus_regressionData_030507$resconsumption_plus <- KVIC_plus_consumption_plus_030507.lm$residuals
+
+
+KVIC_plus_consumption_plus_091113.lm = svyglm(logconsumption_plus ~ year +
+                                         yob +
+                                         #age + 
+                                         educ +
+                                         white +
+                                         black +
+                                         other +
+                                         famSize + 
+                                         kids + 
+                                         employed +
+                                         unemployed +
+                                         retired +
+                                         exIncome +
+                                         region + 
+                                         kidsOut +
+                                         poorHTM +
+                                         richHTM + 
+                                         educ*year +
+                                         white*year +
+                                         black*year +
+                                         other*year +
+                                         employed*year + 
+                                         unemployed*year +
+                                         retired*year +
+                                         region*year + 
+                                         totalWealth + 
+                                         interestRate,
+                                       familyPanelSurvey091113) 
+KVIC_plus_regressionData_091113$resconsumption_plus <-KVIC_plus_consumption_plus_091113.lm$residuals
+
+
+KVIC_plus_covData_030507 = KVIC_plus_regressionData_030507[ , c("uniqueID","quintile","year","resconsumption_plus","resIncome")]
+KVIC_plus_covData_091113 = KVIC_plus_regressionData_091113[ , c("uniqueID","quintile","year","resconsumption_plus","resIncome")]
+
+# deal with outliers - take off bottom 0.1%
+resconsumption_plus_q_030507 <- quantile(KVIC_plus_covData_030507$resconsumption_plus,seq(0,1,0.001),na.rm=TRUE)
+resconsumption_plus_q_091113 <- quantile(KVIC_plus_covData_091113$resconsumption_plus,seq(0,1,0.001),na.rm=TRUE)
+
+KVIC_plus_covData_030507 <- subset(KVIC_plus_covData_030507,KVIC_plus_covData_030507$resconsumption_plus>resconsumption_plus_q_030507[2] & KVIC_plus_covData_030507$resconsumption_plus<resconsumption_plus_q_030507[1000])
+KVIC_plus_covData_091113 <- subset(KVIC_plus_covData_091113,KVIC_plus_covData_091113$resconsumption_plus>resconsumption_plus_q_091113[2] & KVIC_plus_covData_091113$resconsumption_plus<resconsumption_plus_q_091113[1000])
+
+resIncome_q_030507 <- quantile(KVIC_plus_covData_030507$resIncome,seq(0,1,0.001),na.rm=TRUE)
+resIncome_q_091113 <- quantile(KVIC_plus_covData_091113$resIncome,seq(0,1,0.001),na.rm=TRUE)
+
+KVIC_plus_covData_030507 <- subset(KVIC_plus_covData_030507,KVIC_plus_covData_030507$resIncome>resIncome_q_030507[2] & KVIC_plus_covData_030507$resIncome<resIncome_q_030507[1000])
+KVIC_plus_covData_091113 <- subset(KVIC_plus_covData_091113,KVIC_plus_covData_091113$resIncome>resIncome_q_091113[2] & KVIC_plus_covData_091113$resIncome<resIncome_q_091113[1000])
+
+#plot residuals
+plot(KVIC_plus_covData_030507$resIncome,KVIC_plus_covData_030507$resconsumption_plus)
+plot(KVIC_plus_covData_091113$resIncome,KVIC_plus_covData_091113$resconsumption_plus)
+
+KVIC_plus_covData_030507 <- reshape(KVIC_plus_covData_030507,idvar="uniqueID",direction="wide",v.names=c("quintile","resconsumption_plus","resIncome"),timevar="year")
+KVIC_plus_covData_091113 <- reshape(KVIC_plus_covData_091113,idvar="uniqueID",direction="wide",v.names=c("quintile","resconsumption_plus","resIncome"),timevar="year")
+
+KVIC_plus_covData_030507$dst <- KVIC_plus_covData_030507$resconsumption_plus.2005 - KVIC_plus_covData_030507$resconsumption_plus.2003
+KVIC_plus_covData_030507$dyt <- KVIC_plus_covData_030507$resIncome.2005 - KVIC_plus_covData_030507$resIncome.2003
+KVIC_plus_covData_030507$dytplus1 <- KVIC_plus_covData_030507$resIncome.2007 - KVIC_plus_covData_030507$resIncome.2005
+
+
+KVIC_plus_covData_091113$dst <- KVIC_plus_covData_091113$resconsumption_plus.2011 - KVIC_plus_covData_091113$resconsumption_plus.2009
+KVIC_plus_covData_091113$dyt <- KVIC_plus_covData_091113$resIncome.2011 - KVIC_plus_covData_091113$resIncome.2009
+KVIC_plus_covData_091113$dytplus1 <- KVIC_plus_covData_091113$resIncome.2013 - KVIC_plus_covData_091113$resIncome.2011
+
+
+
+
+# MPIC_plus
+print("MPIC_plus as 07")
+for (i in c(1,2,3,4,5)){
+  MPIC_plus_mdl_030507 <- ivreg(dst ~ dyt, ~ dytplus1, x=TRUE, data=KVIC_plus_covData_030507, subset=quintile.2003==i)
+  assign(paste0("MPIC_plus_mdl_030507_q",i),
+         MPIC_plus_mdl_030507)
+  assign(paste0("MPIC_plus_030507_q",i),
+         MPIC_plus_mdl_030507$coefficients[2]
+  )
+  temp <- anderson.rubin.ci(MPIC_plus_mdl_030507)
+  assign(paste0("MPIC_plus_CI_low_07_q",i),
+         as.numeric(substr(unlist(strsplit(temp$confidence.interval, split=" , "))[1],3,nchar(unlist(strsplit(temp$confidence.interval, split=" , "))[1]))))
+  assign(paste0("MPIC_plus_CI_up_07_q",i),
+         as.numeric(substr(unlist(strsplit(temp$confidence.interval, split=" , "))[2],1,nchar(unlist(strsplit(temp$confidence.interval, split=" , "))[2])-3)))
+  print(paste0("CI low q",i,":",unname(eval(as.name(paste0("MPIC_plus_CI_low_07_q",i))))))
+  print(paste0("q",i,":",unname(eval(as.name(paste0("MPIC_plus_030507_q",i))))))
+  print(paste0("CI high q",i,":",unname(eval(as.name(paste0("MPIC_plus_CI_up_07_q",i))))))
+}
+
+# MPIC_plus
+print("MPIC_plus as 13")
+for (i in c(1,2,3,4,5)){
+  MPIC_plus_mdl_091113 = ivreg(dst ~ dyt, ~ dytplus1, x=TRUE, data=KVIC_plus_covData_091113,subset=quintile.2009==i)
+  assign(paste0("MPIC_plus_mdl_091113_q",i),
+         MPIC_plus_mdl_091113)
+  assign(paste0("MPIC_plus_091113_q",i),
+         MPIC_plus_mdl_091113$coefficients[2]
+  )
+  temp <- anderson.rubin.ci(MPIC_plus_mdl_091113)
+  assign(paste0("MPIC_plus_CI_low_13_q",i),
+         as.numeric(substr(unlist(strsplit(temp$confidence.interval, split=" , "))[1],3,nchar(unlist(strsplit(temp$confidence.interval, split=" , "))[1]))))
+  assign(paste0("MPIC_plus_CI_up_13_q",i),
+         as.numeric(substr(unlist(strsplit(temp$confidence.interval, split=" , "))[2],1,nchar(unlist(strsplit(temp$confidence.interval, split=" , "))[2])-3)))
+  
+  print(paste0("CI low q",i,":",unname(eval(as.name(paste0("MPIC_plus_CI_low_13_q",i))))))
+  print(paste0("q",i,":",unname(eval(as.name(paste0("MPIC_plus_091113_q",i))))))
+  print(paste0("CI high q",i,":",unname(eval(as.name(paste0("MPIC_plus_CI_up_13_q",i))))))
+}
+
+out_MPIC_plus <- data.frame("quantile" = c(1,2,3,4,5,1,2,3,4,5),
+                       "year" = c("2007","2007","2007","2007","2007","2013","2013","2013","2013","2013"),
+                       "MPIC_plus" = c(MPIC_plus_030507_q1,
+                                  MPIC_plus_030507_q2,
+                                  MPIC_plus_030507_q3,
+                                  MPIC_plus_030507_q4,
+                                  MPIC_plus_030507_q5,
+                                  MPIC_plus_091113_q1,
+                                  MPIC_plus_091113_q2,
+                                  MPIC_plus_091113_q3,
+                                  MPIC_plus_091113_q4,
+                                  MPIC_plus_091113_q5),
+                       "MPIC_plus_CI_lower" = c(MPIC_plus_CI_low_07_q1,
+                                           MPIC_plus_CI_low_07_q2,
+                                           MPIC_plus_CI_low_07_q3,
+                                           MPIC_plus_CI_low_07_q4,
+                                           MPIC_plus_CI_low_07_q5,
+                                           MPIC_plus_CI_low_13_q1,
+                                           MPIC_plus_CI_low_13_q2,
+                                           MPIC_plus_CI_low_13_q3,
+                                           MPIC_plus_CI_low_13_q4,
+                                           MPIC_plus_CI_low_13_q5),
+                       "MPIC_plus_CI_upper" = c(MPIC_plus_CI_up_07_q1,
+                                           MPIC_plus_CI_up_07_q2,
+                                           MPIC_plus_CI_up_07_q3,
+                                           MPIC_plus_CI_up_07_q4,
+                                           MPIC_plus_CI_up_07_q5,
+                                           MPIC_plus_CI_up_13_q1,
+                                           MPIC_plus_CI_up_13_q2,
+                                           MPIC_plus_CI_up_13_q3,
+                                           MPIC_plus_CI_up_13_q4,
+                                           MPIC_plus_CI_up_13_q5))
+pdf(file=paste0(getwd(),"/Results/MPIC_plus.pdf"))
+ggplot(data = out_MPIC_plus, aes(x = quantile, y = MPIC_plus, group=year, color=year)) +
+  geom_line() + geom_point()+
+  geom_ribbon(data= out_MPIC_plus,aes(ymin= MPIC_plus_CI_lower,ymax= MPIC_plus_CI_upper),alpha=0.3) +
+  scale_color_brewer(palette="Paired")+
+  theme_minimal() +
+  xlab("Income Quintile") +
+  ylab("MPIC_plus") +
+  labs(color="Year")
+dev.off()
+ggplot(data = out_MPIC_plus, aes(x = quantile, y = MPIC_plus, group=year, color=year)) +
+  geom_line() + geom_point()+
+  geom_ribbon(data= out_MPIC_plus,aes(ymin= MPIC_plus_CI_lower,ymax= MPIC_plus_CI_upper),alpha=0.3) +
+  scale_color_brewer(palette="Paired")+
+  theme_minimal() +
+  xlab("Income Quintile") +
+  ylab("MPIC_plus") +
+  labs(color="Year")
+
+# whole sample MPIC_plus
+MPIC_plus_mdl_030507_whole = ivreg(dst ~ dyt, ~ dytplus1, x=TRUE, data=KVIC_plus_covData_030507)
+MPIC_plus_mdl_030507_whole$coefficients[2]
+anderson.rubin.ci(MPIC_plus_mdl_030507_whole)
+# write to text files
+# coefficient
+write(toString(round(MPIC_plus_mdl_030507_whole$coefficients[2],3)),file=paste0(getwd(),"/Results/MPIC_plus_030507.txt"))
+#standard error
+write(toString(round(coef(summary(MPIC_plus_mdl_030507_whole))[2,2],3)),file=paste0(getwd(),"/Results/MPIC_plus_030507_stdErr.txt"))
+# stars
+write(toString(stars.pval(coef(summary(MPIC_plus_mdl_030507_whole))[2,4])),file=paste0(getwd(),"/Results/MPIC_plus_030507_stars.txt"))
+#N
+write(toString(MPIC_plus_mdl_030507_whole$nobs),file=paste0(getwd(),"/Results/MPIC_plus_030507_N.txt"))
+
+
+MPIC_plus_mdl_091113_whole = ivreg(dst ~ dyt, ~ dytplus1, x=TRUE, data=KVIC_plus_covData_091113)
+MPIC_plus_mdl_091113_whole$coefficients[2]
+anderson.rubin.ci(MPIC_plus_mdl_091113_whole)
+# write to text files
+# coefficient
+write(toString(round(MPIC_plus_mdl_091113_whole$coefficients[2],3)),file=paste0(getwd(),"/Results/MPIC_plus_091113.txt"))
+#standard error
+write(toString(round(coef(summary(MPIC_plus_mdl_091113_whole))[2,2],3)),file=paste0(getwd(),"/Results/MPIC_plus_091113_stdErr.txt"))
+# stars
+write(toString(stars.pval(coef(summary(MPIC_plus_mdl_091113_whole))[2,4])),file=paste0(getwd(),"/Results/MPIC_plus_091113_stars.txt"))
+#N
+write(toString(MPIC_plus_mdl_091113_whole$nobs),file=paste0(getwd(),"/Results/MPIC_plus_091113_N.txt"))
+
+
+
+rm(i,temp)#,KVIC_plus_covData_030507, KVIC_plus_covData_091113)
+rm(list=ls(pattern="quintiles_"))
+rm(list=ls(pattern="quantiles_"))
+rm(list=ls(pattern="familyPanelSurvey"))
+
+

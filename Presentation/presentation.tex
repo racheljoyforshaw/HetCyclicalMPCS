@@ -1,0 +1,340 @@
+\documentclass{beamer}
+ 
+\usepackage[utf8]{inputenc}
+\usepackage{adjustbox}
+\usepackage{comment}
+\usepackage{lscape}
+\usepackage{color, colortbl}
+\usepackage{ifthen}
+\usepackage{tikz}
+\usepackage{forest}
+\usepackage{xcolor}
+ \usepackage{natbib,har2nat}
+ \usepackage{booktabs,calc}
+ \usepackage{threeparttable}
+ \usepackage{dcolumn}
+
+\makeatletter
+\renewcommand\@cite[2]{%
+	~#1\ifthenelse{\boolean{@tempswa}}
+	{, \nolinebreak[3] #2}{}
+}
+\renewcommand\@biblabel[1]{#1.}
+\makeatother
+\definecolor{Cyan}{rgb}{0.88,1,1}
+
+\setbeamertemplate{footline}[frame number]
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\renewcommand{\today}{\ifcase \month \or January\or February\or March\or %
+	April\or May \or June\or July\or August\or September\or October\or November\or %
+	December\fi \number \year}
+\AtBeginSection[]
+
+    \RequirePackage{filecontents}
+
+
+
+ 
+%Information to be included in the title page:
+\title{Heterogenous Consumption Responses and Inequality over the Business Cycle}
+\author[shortname]{Rachel Forshaw \inst{1}} 
+\institute[shortinst]{\inst{1} Assistant Professor, Heriot-Watt University}
+\date[] %{\today}
+{Scottish Economic Society 2021}
+
+\begin{document}
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\frame{\titlepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{\scshape Motivation}
+\begin{frame}{Motivation}
+	\begin{itemize}
+		\item Recent research has highlighted the importance of understanding heterogeneous behaviour for fiscal policy, monetary policy transmission and welfare\footnote{See \cite{HeathcodeReview} for a review.}
+		\item While work on estimating the distribution of marginal propensity to consume (MPCs) is growing, most work focuses on heterogeneity over the cross-section
+		\item Little attention is given to its behaviour over time, in particular how it behaves over the business cycle.
+	%	\item If MPC distribution varies over time, micro heterogeneity matters for macroeconomic aggregates\footnote{See  \citet{BlundellStoker}}
+	\end{itemize}
+\end{frame}
+
+\section{\scshape Research Question}
+\begin{frame}{Research Question}
+	\begin{itemize}
+	\item What do incomplete market heterogenous agent models predict for the distribution of MPCs over the cycle?
+	\item Is this consistent with the data?
+	\begin{itemize}
+	\item Using US PSID survey data for 2003-2013
+	\end{itemize}
+	\end{itemize}
+	\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\scshape Related Literature}
+\begin{frame}{Related Literature}
+Difficulty is in identifying transitory and permanent components of income shocks.
+		\begin{itemize}
+		\item Structural models which simulate a distribution of MPCs: 
+		\begin{itemize}
+		\item \citet{CSTW2017}, \cite{Carroll2014}
+		\end{itemize}
+		\item Reduced-form:
+			\begin{itemize}
+				\item Proxies for transitory income changes, such as unemployment or illness; bankrupcy flags \cite{Gross2020}
+				\item Subjective expectations of income \cite{Pistaferri2001}
+				\item Consumption responses to tax rebates:  \citet{KaplanViolanteWeidner2014}, \citet{ParkerEtAl2013}, \citet{JohnsonParkerSouleles2004}, \citet{MisraSurico2014} \citet{Lewis2019}
+				\item Covariance restrictions: \citet{BPP}, \citet{KaplanViolante2014}
+				
+			\end{itemize}
+		\item \textit{This paper}: Distribution of MPCs over the cycle
+		\end{itemize}
+
+\end{frame}
+
+
+\section{\scshape Structural Model}
+\begin{frame}{Structural Model}
+	\begin{itemize}
+		\item Incomplete markets heterogenous agents model of \citet{KrusellSmith1999}
+		\begin{itemize}
+			\item Continuum of agents that face employment shocks ${e,u}$ and aggregate shocks ${z_g, z_b}$ over which the only insurance is individual wealth $k$ subject to borrowing constraint $k>0$
+		\end{itemize}
+	\item Following \citet{Castaneda2003} and \citet{CSTW2017} choose time preference parameters to be distributed uniformly in the population between $\grave{\beta} \pm \nabla$ to fit the proportion of wealth $w$ held by richest 20,40, 60 and 80\%, ie:
+	\begin{equation}
+	\{\grave{\beta},\nabla\}  = \underset{\beta,\nabla}{\operatorname{argmin}}  \left(\sum_{i=20,40,60,80}(w_i(\beta,\nabla)-w_i)^2\right)^{1/2}
+	\label{eqn:betaMin}
+	\end{equation}
+	\item Calibrate this to US PSID wealth distributions for 2007 and 2009 (pre-recession, recession periods)
+	\end{itemize}
+\end{frame}
+
+
+
+
+
+\begin{frame}{}
+	\begin{table}[h!]
+	%\begin{minipage}{\textwidth}
+	\resizebox{1\textwidth}{!}{
+		\input{../Paper/MPC_scenarios}
+	}
+%	\captionof{table}{\small Marginal Propensity to Consume over the Business Cycle - 2006 and 2008 Calibrations Compared}
+	\begin{tablenotes}
+	\linespread{1}\tiny
+		\item	{ \textit{Notes: Annual MPC is calculated by }$1-(1-$\text{quarterly MPC}$)^{4}$. \textit{ The scenarios
+				are calculated for the $\beta$-Dist models calibrated to the net worth distributions described. For the KS aggregate shocks, the results are obtained by running the simulation over 1,000 periods, and the scenarios are defined as `Recessions/Expansions': bad/good realization of the aggregate state.}
+			${}^\ddagger$ \textit{Discount factors are uniformly distributed over the interval} $[\grave{\beta}-\nabla,\grave{\beta}+\nabla]$.}
+	\end{tablenotes}
+	\label{table:MPCBetaDist}
+\end{table}
+\end{frame}
+
+
+\begin{frame}{}
+\begin{figure}[h!]
+	\begin{minipage}[b]{0.45\linewidth}
+		\centering
+		\includegraphics[width=1.1\textwidth]{../Results/MPC_07.pdf}
+	\end{minipage}
+	\hspace{0.5cm}
+	\begin{minipage}[b]{0.45\linewidth}
+		\centering
+		\includegraphics[width=1.1\textwidth]{../Results/MPC_09.pdf}
+	\end{minipage}
+	%	\begin{minipage}[b]{0.5\linewidth}
+	%		\centering
+	%		\includegraphics[width=1\textwidth]{../../../ActiveSaving/Results/MPC_07_09.pdf}
+	%	\end{minipage}
+	\caption{\tiny MPC at the income quintiles generated from 2007 calibration in pre-recession (left) and 2009 calibration in recession (right)}
+	%\label{fig:MPCKS_07and09}
+\end{figure}
+\end{frame}
+
+
+
+\begin{comment}
+\section{\scshape Simple Estimate of the APC}
+\begin{frame}{Simple Estimate of the APC}
+	\begin{center}
+		\begin{figure}[H]
+			\begin{minipage}[b]{0.6\linewidth}
+				\centering
+				\includegraphics[width=1.3\textwidth]{../Results/cons_DSZ_dates.pdf}
+			\end{minipage}
+			\caption{\tiny PSID Average consumption rates divided by average income, by income quintile (identity of households fixed at the beginning of the period)}
+			%\label{fig:DSZ}
+		\end{figure}
+	\end{center}
+\end{frame}
+\end{comment}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\scshape Reduced-form Model}
+\begin{frame}{Reduced-form Model Overview}
+\begin{itemize}
+	\item First-step pooled OLS model of forecastable income and consumption 
+	\item Collect residuals and take first differences
+	\item Second-step Instrumental Variables Quantile Regression to estimate MPCs over its conditional distribution
+	\item Plot MPCs by rank-score quantile of the conditional distribution of MPCs in pre-recession and post-recession periods
+\end{itemize}	
+	
+\end{frame}	
+
+\begin{frame}
+Following \citet{BPP} and \citet{KaplanViolanteWeidner2014}, assume income follows the process:
+
+\begin{equation}
+\label{eqn:incomeProcess}
+\log Y_{i,t} = \mathbf{Z}'_{it}\mathbf{\Phi}_t + P_{i,t} + \epsilon_{i,t}
+\end{equation}
+
+{\tiny $i$: individual at time $t$, $Y$: income, $\mathbf{Z}$: observable income characteristics, $P_{i,t} = P_{i,t-1} + \xi_{i,t}$: martingale permanent income process with i.i.d. shock $\xi$; $\epsilon$: i.i.d. transitory income shock.} \\
+
+
+\vspace{2mm}
+By estimating equation \ref{eqn:incomeProcess} via Pooled OLS I recover the first-differenced residuals to obtain unexplained income growth:
+
+\begin{equation*}
+\Delta y_{i,t} = \xi_{i,t} + \Delta \epsilon_{i,t}
+\end{equation*}
+
+Similarly for consumption:
+
+\begin{equation*}
+\Delta c_{i,t} = \psi^{P}_{i,t}\xi_{i,t} + \psi^{T}_{i,t}\Delta \epsilon_{i,t}
+\end{equation*}
+
+{\tiny $y_{i,t} = \log Y_{i,t} - \mathbf{Z}'_{it}\hat{\mathbf{\Phi}}_t $, $c_{i,t} = \log Y_{i,t} - \mathbf{Z}'_{it}\hat{\mathbf{\Psi}}_t $,\\ $\psi^{P}_{i,t}$ and $\psi^{T}_{i,t}$: loading factors on permanent and transitory income shocks}
+
+\end{frame}
+
+\begin{frame}{}
+	
+	True marginal propensity to consume out of a transitory income shock:
+	\begin{equation*}
+	\text{MPC}_t = \frac{\text{cov}(\Delta c_{i,t}, \epsilon_{i,t})}{\text{var}(\epsilon_{i,t})}	
+	\end{equation*}
+
+Covariance restriction:  {\small individuals have no foresight about future shocks, i.e. $\text{cov}(\Delta c_{i,t},\epsilon_{i,t+1}) = \text{cov}(\Delta c_{i,t},\xi_{i,t+1}) = 0$.} \\
+\vspace{2mm}
+
+Then can consistently estimate:
+\begin{equation}
+\label{eqn:MPC}
+\widehat{\text{MPC}_t}= \frac{\text{cov}(\Delta c_{i,t}, \Delta y_{i,t+1})}{\text{cov}(\ \Delta y_{i,t}, \Delta y_{i,t+1})}
+\end{equation}
+
+Following \citet{ChernozhukovHansen2005}, estimate (\ref{eqn:MPC}) using Instrumental Variable Quantile Regression:
+\begin{equation*}
+Q_{\Delta \widehat{MPC}_{t}}(\tau), \quad \tau ={ 0.5, 0.10...0.95} 
+\end{equation*}
+
+\end{frame}
+
+
+
+ \begin{frame}{Data}
+ 	\begin{itemize}
+ 	
+\item PSID 2003, 2005, 2007, 2009, 2011, 2013
+\item Keep households that have a minimum of 3 consecutive periods of data
+\item After-tax income calculated using TaxSim; consumption includes food, transport, childcare, healthcare, education, housing, vacations, recreation and clothing
+\item Drop households with zero or negative consumption or income
+\item  $Z$ contains cohort dummies, education, race, family structure, employment, region
+\item Sample of $\approx 31,000$
+\end{itemize}
+\end{frame}
+
+ \begin{frame}{Note on time dummies}
+	\begin{itemize}
+		
+		\item \cite{BPP} and \cite{KaplanViolante2014} include a set of time dummies in the first stage regression, I do not
+		\item Important to include  in Pooled OLS if we think the model changes over time
+		\item I do not include because:
+		\begin{itemize}
+			\item This would attribute all cyclical variation to forcastable permanent income
+			\item Consumption fell much less than income in the Great Recession
+			\item We do not model permanent income as a function of the cycle
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ \begin{frame}{Results - First Step Pooled OLS}
+ 	\begin{center}
+ 		\resizebox{0.4\textwidth}{!}{
+	\input{../Results/KVC_consumption_IVQR.tex}}
+ 	\end{center}
+	\end{frame}
+
+
+ \begin{frame}{Results - Second Step IV Quantile Regression}
+\begin{center}
+	\includegraphics[width=0.6\textwidth]{../Results/KVC_consumption_IVQR.pdf}
+\end{center}
+
+	
+\end{frame}
+
+ \begin{frame}{Results}
+ 	\begin{center}
+
+		\includegraphics[width=0.7\textwidth]{../Results/IVQR_recNoRec_diff.pdf}
+	\end{center}
+
+\end{frame}
+
+
+ \begin{frame}{Results}
+	\begin{center}
+	\begin{minipage}[b]{0.45\linewidth}
+	\centering
+	\includegraphics[width=1\textwidth]{../Results/IVQR_medInc.pdf}
+			\end{minipage}
+			\begin{minipage}[b]{0.45\linewidth}
+			\centering
+			\includegraphics[width=1\textwidth]{../Results/IVQR_medWealth.pdf}
+		\end{minipage}
+	\end{center}
+	
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \begin{frame}{Summary}
+	\begin{itemize}
+	\item In a canonical incomplete markets heterogenous agents model with heterogenous discount factors
+	\begin{itemize}
+	 \item internal business cycle dynamics imply that just the poorest income quintiles' MPCs increase in a recession
+	 \item fitting the empirical wealth distribution implies a shift across the whole MPC distribution
+ 	\end{itemize}
+ \item Significant heterogeneity in MPCs in the cross section
+ \item Suggestive empirical evidence that MPC distribution also varies over the cycle
+ \item However, MPC does not seem to vary with state variables such as income, wealth
+ \item Caveat - work in progress: in particular, think about expectations - at least some of the cycle is forecastable
+
+
+
+	\end{itemize}
+	
+	
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \begin{frame}{Thanks for listening!}
+
+Any questions?
+		
+	\end{frame}
+	
+\begin{frame}[allowframebreaks]
+	\frametitle{References}
+	\bibliographystyle{apalike}
+	\bibliography{../Paper/references.bib}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,5 @@
+\beamer@sectionintoc {1}{\scshape Motivation}{2}{0}{1}
+\beamer@sectionintoc {2}{\scshape Research Question}{3}{0}{2}
+\beamer@sectionintoc {3}{\scshape Related Literature}{4}{0}{3}
+\beamer@sectionintoc {4}{\scshape Structural Model}{5}{0}{4}
+\beamer@sectionintoc {5}{\scshape Reduced-form Model}{8}{0}{5}

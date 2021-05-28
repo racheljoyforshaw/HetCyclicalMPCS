@@ -1,0 +1,7 @@
+library(psidR)
+cwf = openxlsx::read.xlsx(system.file(package="psidR","psid-lists","psid.xlsx"))
+head_age_var_name <- getNamesPSID("ER17013", cwf, years=c(1999))
+educ = getNamesPSID("ER30323",cwf,years=1999)
+famvars = data.frame(year=c(1999),age=head_age_var_name)
+indvars = data.frame(year=c(1999),educ=educ)
+build.panel(fam.vars=famvars,ind.vars=indvars,datadir="/Users/Rachel/Documents/PhD/ActiveSaving/Data")
